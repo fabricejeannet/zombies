@@ -31,7 +31,7 @@ func place_on_tile_map(zombie) -> void:
 		cell_is_full = $TileMap.get_cellv($TileMap.world_to_map(Vector2(xpos, ypos))) != $TileMap.INVALID_CELL	
 	zombie.position = Vector2(xpos, ypos)
 	
-	zombie.current_speed =  rng.randi_range(0, zombie.max_speed / 2)
+	zombie.current_speed =  rng.randi_range(0, zombie.max_speed)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and  event.button_index == BUTTON_LEFT and event.pressed:

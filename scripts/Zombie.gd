@@ -2,9 +2,10 @@ extends KinematicBody2D
 
 
 var neighbours = []
+var avg_speed = 0
 
 export var sound_range = 200.0
-export var current_speed = 20
+export var current_speed = 0
 export var max_speed = 50
 export var acceleration_factor = 1.2
 export var rotation_factor = 0.02
@@ -13,6 +14,7 @@ export var centering_factor = 0.5
 onready var target:Vector2 = position
 
 func _physics_process(delta):
+	update_speed()
 	var motion = (target - position).normalized() * centering_factor * current_speed
 	move_and_slide(motion)
 	rotate(get_angle_to(target) * rotation_factor)
@@ -35,6 +37,11 @@ func _on_Sight_body_exited(body):
 		neighbours.remove(index)
 
 
+func update_speed() -> void :
+	if current_speed < avg_speed and current_speed < max_speed:
+		current_speed *= acceleration_factor
+
+
 func update_motion() :
 	var xs = 0.0
 	var ys = 0.0
@@ -48,12 +55,9 @@ func update_motion() :
 		
 		
 	var center_of_mass= Vector2 (xs / sub_herd_size, ys / sub_herd_size)
-#	target = center_of_mass
+	avg_speed = speeds / sub_herd_size
 	
-	var avg_speed = speeds / sub_herd_size
-	
-	if current_speed < avg_speed and current_speed < max_speed:
-		current_speed *= acceleration_factor
+
 	
 	$SpeedLabel.text = str(current_speed) + " / " + str(max_speed)
 
