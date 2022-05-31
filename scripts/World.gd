@@ -3,7 +3,9 @@ extends Node2D
 signal gun_fired
 
 var Zombie = preload("res://scenes/Zombie.tscn")
+var HumanBeing = preload("res://scenes/HumanBeing.tscn")
 var herd  = []
+
 
 onready var rows = $TileMap.get_used_rect().size.y
 onready var cols = $TileMap.get_used_rect().size.x
@@ -31,8 +33,15 @@ func place_on_tile_map(zombie) -> void:
 		cell_is_full = $TileMap.get_cellv($TileMap.world_to_map(Vector2(xpos, ypos))) != $TileMap.INVALID_CELL	
 	zombie.position = Vector2(xpos, ypos)
 	
-	zombie.current_speed =  rng.randi_range(0, zombie.max_speed)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and  event.button_index == BUTTON_LEFT and event.pressed:
-		emit_signal("gun_fired", get_global_mouse_position())
+#		emit_signal("gun_fired", get_global_mouse_position())
+		var human = HumanBeing.instance()
+		human.position = get_global_mouse_position()
+		add_child(human)
+
+func on_roaring(roarer, prey) -> void :
+	for zombie in herd:
+		if zombie.position.distance_to(roarer.position) <= roarer.roaring_range:
+			zombie.choose_target(prey)

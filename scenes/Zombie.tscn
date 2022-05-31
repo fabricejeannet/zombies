@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/img/zombie.png" type="Texture" id=1]
 [ext_resource path="res://resources/zombie_shader.tres" type="Shader" id=2]
@@ -7,15 +7,15 @@
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 2 )
 
-[sub_resource type="CircleShape2D" id=3]
-radius = 410.239
-
-[node name="Zombie" type="KinematicBody2D"]
-scale = Vector2( 0.8, 0.8 )
+[node name="Zombie" type="KinematicBody2D" groups=["zombie"]]
+scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 3 )
-sound_range = 1000.0
+__meta__ = {
+"_edit_vertical_guides_": [  ]
+}
+sound_range = 400.0
 max_speed = 100
-acceleration_factor = 1.5
+acceleration_factor = 1.1
 
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 2 )
@@ -26,8 +26,8 @@ polygon = PoolVector2Array( -32, -32, 32, 0, -32, 32, -21, 0 )
 
 [node name="Sight" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sight"]
-shape = SubResource( 3 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sight"]
+polygon = PoolVector2Array( 1.25, 0, 106.25, 397.5, 207.5, 355, 291.25, 290, 357.5, 205, 397.5, 106.25, 411.25, -1.25, 398.75, -106.25, 356.25, -207.5, 290, -290, 203.75, -357.5, 106.25, -395 )
 
 [node name="SpeedLabel" type="Label" parent="."]
 margin_left = -66.0
