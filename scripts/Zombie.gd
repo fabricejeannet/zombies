@@ -6,10 +6,9 @@ var neighbours = []
 var avg_speed = 0
 var target = null
 var roaming:bool = true
-
 var linear_velocity:Vector2
 var rng = RandomNumberGenerator.new()
-	
+
 export var sound_range = 200.0
 export var current_speed = 0
 export var max_speed = 50
@@ -36,7 +35,7 @@ func roam() -> void:
 
 func _physics_process(delta):
 	update()
-	move_and_slide(get_linear_velocity(), Vector2(0.0, 0.0), false, 1)
+	move_and_slide(get_linear_velocity(), Vector2(0.0, 0.0), false, 4)
 	rotate(get_angle_to(target_position) * rotation_factor) 
 
 
@@ -51,7 +50,7 @@ func _on_Sight_body_entered(body):
 	
 	if body.is_in_group("prey"):
 		choose_target(body)
-		emit_signal("roaring", self, body)
+#		emit_signal("roaring", self, body)
 
 
 
@@ -72,7 +71,8 @@ func get_linear_velocity() :
 	var sub_herd_size = float(neighbours.size())
 	var center_of_mass:Vector2
 	
-	if target == null:
+	
+	if !is_instance_valid(target):
 		if sub_herd_size > 0 :
 			for zombie in neighbours:
 				xs += zombie.target_position.x
@@ -87,15 +87,23 @@ func get_linear_velocity() :
 
 
 func choose_target(prey) -> void :
-	if (target != null and position.distance_to(prey.position) < position.distance_to(target.position)) or target == null:
-				target = prey
+	if (is_instance_valid(target) and position.distance_to(prey.position) < position.distance_to(target.position)) or target == null:
+		target = prey
 
 
 func _draw() :
 	var the_color = Color.red
-	if target != null:
+	if is_instance_valid(target):
 		the_color = Color.green
 		
 	draw_circle(to_local(position + Vector2(25.0, 0.0)), 10, the_color)
 	
 #	draw_arc(to_local(position), roaring_range, 0.0, 360.0, 10, Color.aqua, 1.0, false)
+
+
+func _on_Mouth_body_entered(body):
+	if body.is_in_group("prey") :
+		body.turn_into_zombie()
+#		roam()
+#		for zombie in neighbours:
+#			zombie.target = null

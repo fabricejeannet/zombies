@@ -21,6 +21,7 @@ func _ready():
 		add_child(zombie)
 		connect("gun_fired", zombie, "on_gun_fired")
 
+
 func place_on_tile_map(zombie) -> void:
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
@@ -45,3 +46,6 @@ func on_roaring(roarer, prey) -> void :
 	for zombie in herd:
 		if zombie.position.distance_to(roarer.position) <= roarer.roaring_range:
 			zombie.choose_target(prey)
+			
+
+

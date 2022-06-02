@@ -1,8 +1,10 @@
 extends KinematicBody2D
 
+var Zombie = preload("res://scenes/Zombie.tscn")
 
-
-func _on_VitalArea_body_entered(body):
-	if body.is_in_group("zombie") :
-		get_parent().remove_child(self)
-
+func turn_into_zombie() -> void :
+		var zombie = Zombie.instance()
+		zombie.position = self.position
+		get_parent().call_deferred("add_child", zombie)
+		get_parent().herd.append(zombie)
+		self.queue_free()

@@ -35,5 +35,13 @@ margin_top = -82.0
 margin_right = 65.0
 margin_bottom = -36.0
 
+[node name="Mouth" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Mouth"]
+position = Vector2( -5.66346, 0 )
+scale = Vector2( 1.29808, 1.29808 )
+polygon = PoolVector2Array( 6, -14, 6, 14, 32, 0 )
+
 [connection signal="body_entered" from="Sight" to="." method="_on_Sight_body_entered"]
 [connection signal="body_exited" from="Sight" to="." method="_on_Sight_body_exited"]
+[connection signal="body_entered" from="Mouth" to="." method="_on_Mouth_body_entered"]
